@@ -1,32 +1,47 @@
 import React from 'react';
-import './App.css';
-import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LandingPage from '../components/LandingPage';
-import LoginPage from '../components/LoginPage';
-import RegisterPage from '../components/RegisterPage';
-import AdminPage from '../components/AdminPage';
-import AppointmentPage from '../components/AppointmentPage';
+import NavigationBar from '../components/Navbar';
+import LandingPage from '../pages/LandingPage';
+import LoginPage from '../pages/LoginPage';
+import RegisterPage from '../pages/RegisterPage';
+import AdminPage from '../pages/AdminPage';
+import AppointmentPage from '../pages/AppointmentPage';
+import ProtectedRoute from '../pages/ProtectedRoute';
 
-
-function App() {
-    return (
-        <Router>
-            <Routes>
-            <Route path="/" element={<LandingPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/admin" element={<AdminPage />} />
-                <Route path="/appointments" element={<AppointmentPage />} />
-
-            </Routes>
-                
-            
-        </Router>
-    );
-}
+const App = () => (
+  <Router>
+    <NavigationBar />
+    <Routes>
+      
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route 
+      path="/admin" 
+      element={
+        <ProtectedRoute>
+          <AdminPage />
+        </ProtectedRoute>
+      } 
+      />
+      <Route 
+      path="/appointments" 
+      element={
+        <ProtectedRoute>
+          <AppointmentPage />
+        </ProtectedRoute>
+    } 
+      
+      />
+      <Route path="/" element={<LoginPage />} />  {/* Redireciona para login por padrão */}
+      <Route path="*" element={<h2>404 Not Found</h2>} />  {/* Rota para páginas não encontradas */}
+    </Routes>
+  </Router>
+);
 
 export default App;
 
-    
-    
+
+
+
